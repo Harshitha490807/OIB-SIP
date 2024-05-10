@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>To-Do Web App</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0;
+      padding: 0;
+    }
+
+    .big-box {
+      max-width: 90%;
+      height: 600px;
+      margin: 50px auto;
+      padding: 20px;
+      border: 2px solid #ccc;
+      border-radius: 10px;
+      box-shadow: 0 0 50px rgba(0, 0, 0, 0.1);
+      display: flex;
+    }
+
+    .task-box {
+      border: 2px solid;
+      border-radius: 10px;
+      padding: 20px;
+      margin-right: 20px;
+      flex: 1;
+    }
+
+    .pending-tasks {
+      border-color: #4CAF50; /* Green */
+      display: flex;
+      justify-content: center;
+    }
+
+    .task-details {
+      border-color: #f1c40f; /* Yellow */
+    }
+
+    .completed-tasks {
+      border-color: #3498db; /* Blue */
+    }
+
+    textarea {
+      width: calc(100% - 20px); /* Adjusting for padding */
+      height: 100px;
+      margin-bottom: 10px;
+      border-radius: 20px;
+    }
+
+    button {
+      padding: 10px 20px;
+      background-color: #4CAF50;
+      color: white;
+      border: none;
+      cursor: pointer;
+      margin-right: 10px;
+      border-radius: 50px;
+    }
+
+    button:hover {
+      background-color: #45a049;
+    }
+
+    ul {
+      list-style-type: none;
+      padding: 0;
+    }
+
+    li {
+      margin-bottom: 10px;
+    }
+
+    .task-item {
+      border: 1px solid #ccc;
+      border-radius: 5px;
+      padding: 10px;
+      margin-bottom: 10px;
+    }
+
+    .task-item-title {
+      font-weight: bold;
+      color: #333;
+    }
+
+    .completed-text {
+      font-weight: bold;
+      color: #555;
+    }
+
+    .completed .completed-text {
+      display: block;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="big-box">
+
+    <div class="task-box pending-tasks">
+      <h2>Pending Tasks</h2>
+      <ul id="pending-list">
+        <!-- Pending tasks will be dynamically added here -->
+      </ul>
+    </div>
+
+    <div class="task-box task-details">
+      <h2>Add New Task</h2>
+      <input type="text" id="task-title" placeholder="Title">
+      <textarea id="task-description" placeholder="Description"></textarea>
+      <button onclick="saveTask()">Save</button>
+      <button onclick="clearForm()">Clear</button>
+    </div>
+
+    <div class="task-box completed-tasks">
+      <h2>Completed Tasks</h2>
+      <ul id="completed-list">
+        <!-- Completed tasks will be dynamically added here -->
+      </ul>
+    </div>
+
+  </div>
+
+  <script>
+    function saveTask() {
+      var title = document.getElementById("task-title").value;
+      var description = document.getElementById("task-description").value;
+
+      if (title && description) {
+        var taskItem = document.createElement("li");
+        taskItem.className = "task-item";
+        taskItem.innerHTML = "<div class='task-item-title'>" + title + "</div>" + description + 
+          "<button onclick='updateTask(this)'>Update</button>" +
+          "<button onclick='deleteTask(this)'>Delete</button>" +
+          "<button onclick='completeTask(this)'>Complete</button>";
+        document.getElementById("pending-list").appendChild(taskItem);
+      }
+    }
+
+    function clearForm() {
+      document.getElementById("task-title").value = "";
+      document.getElementById("task-description").value = "";
+    }
+
+    function updateTask(element) {
+      var newDescription = prompt("Enter the updated description:");
+      if (newDescription !== null) {
+        element.parentNode.childNodes[1].nodeValue = newDescription;
+      }
+    }
+
+    function deleteTask(element) {
+      element.parentNode.remove();
+    }
+
+    function completeTask(element) {
+      var completedTask = element.parentNode;
+      completedTask.removeChild(element); // Remove the "Complete" button
+      completedTask.classList.add("completed");
+      completedTask.innerHTML += "<span class='completed-text'>Completed</span>";
+      document.getElementById("completed-list").appendChild(completedTask);
+    }
+  </script>
+
+</body>
+</html>
